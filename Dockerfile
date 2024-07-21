@@ -12,6 +12,6 @@ RUN rm -rf src/node_modules && cp -a /tmp/node_modules /src/
 
 WORKDIR /src
 
-RUN npm run build
 RUN npm run migrate
+RUN npm run build
 CMD ["node", "dist/index.js"]
