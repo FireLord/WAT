@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  password      String
+  ph_number     Int?
+  account       Template[]
+  contact       Contact[]
+  sent_messages SentMessage[]
+}
+
+model Template {
+  id            String        @id @default(cuid())
+  user_id       String
+  title         String
+  preset_msg    String
+  toggle        Boolean       @default(true)
+  tags          String[]
+  user          User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  sent_messages SentMessage[]
+}
+
+model SentMessage {
+  id       String  @id @default(cuid())
+  user_id  String
+  firt_msg Boolean
+  msg_body String
+  template_id String
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  master      Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id             String   @id @default(cuid())
+  user_id        String
+  orignal_number Int
+  contact_name   String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
