@@ -14,4 +14,4 @@ WORKDIR /src
 
 RUN npm run build
 
-CMD ["node", "build/src/app.js"]
+CMD ["node", "dist/index.js"]
