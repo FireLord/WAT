@@ -9,7 +9,7 @@ export const saveContact = async (req: Request, res: Response) => {
   }: {
     name: string;
     email: string;
-    number: number;
+    number: string;
   } = req.body;
 
   try {
@@ -26,8 +26,9 @@ export const saveContact = async (req: Request, res: Response) => {
         contact_name: name,
       },
     });
+    console.log(contact);
 
-    res.status(201).send("Contact Saved");
+    res.status(201).json({message:"Contact Saved", data:{id:contact.id}});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while saving the contact");
@@ -55,7 +56,7 @@ export const getAllContacts = async (req: Request, res: Response) => {
 };
 
 export const updateContact = async (req: Request, res: Response) => {
-  const { name, number, id } = req.body;
+  const { name, number, id }:{name:string, number:string, id:string} = req.body;
 
   try {
     const contact = await prisma.contact.update({

@@ -42,7 +42,7 @@ model SentMessage {
 model Contact {
   id             String   @id @default(cuid())
   user_id        String
-  orignal_number Int
+  orignal_number String   
   contact_name   String
   created_at     DateTime @default(now())
   updated_at     DateTime @default(now())

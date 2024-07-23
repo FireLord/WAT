@@ -45,7 +45,7 @@ function routes(app: Express) {
   //   email: string;
   // }
 
-  app.post("/api/update-contacts", updateContact);
+  app.post("/api/update-contact", updateContact);
   // body: {
   //   name: string,
   //   number: number,

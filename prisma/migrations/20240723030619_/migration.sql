@@ -1,51 +1,13 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "ph_number" INTEGER,
 
-  - You are about to drop the column `access_token` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `photo` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `total_pnl` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the `ChildAccount` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `MasterAccount` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Prefrences` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "ChildAccount" DROP CONSTRAINT "ChildAccount_master_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "MasterAccount" DROP CONSTRAINT "MasterAccount_user_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "Prefrences" DROP CONSTRAINT "Prefrences_child_account_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "Prefrences" DROP CONSTRAINT "Prefrences_master_account_id_fkey";
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "access_token",
-DROP COLUMN "photo",
-DROP COLUMN "total_pnl";
-
--- DropTable
-DROP TABLE "ChildAccount";
-
--- DropTable
-DROP TABLE "MasterAccount";
-
--- DropTable
-DROP TABLE "Prefrences";
-
--- DropEnum
-DROP TYPE "AccountType";
-
--- DropEnum
-DROP TYPE "Broker";
-
--- DropEnum
-DROP TYPE "OrderStatus";
-
--- DropEnum
-DROP TYPE "TransactionType";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Template" (
@@ -53,6 +15,7 @@ CREATE TABLE "Template" (
     "user_id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "preset_msg" TEXT NOT NULL,
+    "toggle" BOOLEAN NOT NULL DEFAULT true,
     "tags" TEXT[],
 
     CONSTRAINT "Template_pkey" PRIMARY KEY ("id")
@@ -63,6 +26,7 @@ CREATE TABLE "SentMessage" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "firt_msg" BOOLEAN NOT NULL,
+    "msg_body" TEXT NOT NULL,
     "template_id" TEXT NOT NULL,
 
     CONSTRAINT "SentMessage_pkey" PRIMARY KEY ("id")
@@ -79,6 +43,9 @@ CREATE TABLE "Contact" (
 
     CONSTRAINT "Contact_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Template" ADD CONSTRAINT "Template_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
