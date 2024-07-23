@@ -40,7 +40,7 @@ function routes(app: Express) {
   //   number: number;
   // }
 
-  app.post("/api/get-all-contacts", getAllContacts);
+  app.get("/api/get-all-contacts", getAllContacts);
   // body:{
   //   email: string;
   // }
@@ -66,7 +66,7 @@ function routes(app: Express) {
   // }
 
   // get templates
-  app.post("/api/get-template", getTemplate);
+  app.get("/api/get-template", getTemplate);
   // body: {email: string;}
 
   // edit templlates

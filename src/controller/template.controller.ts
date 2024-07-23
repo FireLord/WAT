@@ -39,8 +39,10 @@ export const newTemplate = async (req: Request, res: Response) => {
 
 export const getTemplate = async (req: Request, res: Response) => {
   try {
+    const email = req.query.email as string;
+
     const user = await prisma.user.findUnique({
-      where: { email: req.body.email },
+      where: { email},
     });
     if (!user) {
       return res.status(404).send("User not found");
