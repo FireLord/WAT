@@ -36,7 +36,7 @@ CREATE TABLE "SentMessage" (
 CREATE TABLE "Contact" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
-    "orignal_number" INTEGER NOT NULL,
+    "original_number" TEXT NOT NULL,
     "contact_name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

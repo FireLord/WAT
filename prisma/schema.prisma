@@ -30,21 +30,21 @@ model Template {
 }
 
 model SentMessage {
-  id       String  @id @default(cuid())
-  user_id  String
-  firt_msg Boolean
-  msg_body String
+  id          String   @id @default(cuid())
+  user_id     String
+  firt_msg    Boolean
+  msg_body    String
   template_id String
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   master      Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
 }
 
 model Contact {
-  id             String   @id @default(cuid())
-  user_id        String
-  orignal_number String   
-  contact_name   String
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now())
-  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id              String   @id @default(cuid())
+  user_id         String
+  original_number String
+  contact_name    String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
+  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

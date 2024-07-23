@@ -22,7 +22,7 @@ export const saveContact = async (req: Request, res: Response) => {
     const contact = await prisma.contact.create({
       data: {
         user_id: user.id,
-        orignal_number: number,
+        original_number: number,
         contact_name: name,
       },
     });
@@ -64,7 +64,7 @@ export const updateContact = async (req: Request, res: Response) => {
       where: { id },
       data: {
         contact_name: name,
-        orignal_number: number,
+        original_number: number,
       },
     });
 
