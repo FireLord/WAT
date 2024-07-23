@@ -24,7 +24,7 @@ export const register = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).send("User created");
+    res.status(201).json({message:"User created",data:user});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while creating the user");
@@ -51,7 +51,7 @@ export const login = async (req: Request, res: Response) => {
       name: user.name,
       email,
     };
-    return res.json(payload);
+    return res.json({message:"login success",data:payload});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while logging in");

@@ -49,7 +49,7 @@ export const getAllContacts = async (req: Request, res: Response) => {
       where: { user_id: user.id },
     });
 
-    return res.json(contacts);
+    return res.json({message:"ok",data:contacts});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while fetching contacts");
@@ -68,7 +68,7 @@ export const updateContact = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json(contact);
+    return res.json({message:"updated sucessfully",data:contact});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while updating the contact");
@@ -83,7 +83,7 @@ export const deleteContact = async (req: Request, res: Response) => {
       where: { id },
     });
 
-    return res.send("Contact deleted");
+    return res.json({message:"Contact deleted"});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while deleting the contact");

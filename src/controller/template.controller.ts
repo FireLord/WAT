@@ -30,7 +30,7 @@ export const newTemplate = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).send("Template Saved");
+    res.status(201).json({message:"Template Saved", data:template});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while saving the template");
@@ -52,7 +52,7 @@ export const getTemplate = async (req: Request, res: Response) => {
       where: { user_id: user.id },
     });
 
-    return res.json(templates);
+    return res.json({message:"ok",data:templates});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while fetching templates");
@@ -72,7 +72,7 @@ export const updateTemplate = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json(template);
+    return res.json({message:"updated sucessgully",data:template});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while updating the template");
@@ -87,7 +87,7 @@ export const deleteTemplate = async (req: Request, res: Response) => {
       where: { id },
     });
 
-    return res.send("Template deleted");
+    return res.json({message:"Template deleted"});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while deleting the template");
@@ -105,7 +105,7 @@ export const toggleTemplate = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json(template);
+    return res.json({message:"state changed",data:template});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while toggling the template");
