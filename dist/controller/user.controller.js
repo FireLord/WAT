@@ -17,7 +17,7 @@ const register = async (req, res) => {
                 password: hashedPassword,
             },
         });
-        res.status(201).send("User created");
+        res.status(201).json({ message: "User created", data: user });
     }
     catch (error) {
         console.error(error);
@@ -40,7 +40,7 @@ const login = async (req, res) => {
             name: user.name,
             email,
         };
-        return res.json(payload);
+        return res.json({ message: "login success", data: payload });
     }
     catch (error) {
         console.error(error);

@@ -13,7 +13,7 @@ const sentMessage = async (req, res) => {
                 template_id
             },
         });
-        res.status(201).send("Message saved");
+        res.status(201).json({ message: "Message saved", data: message });
     }
     catch (error) {
         console.error(error);
@@ -33,7 +33,7 @@ const getAllMessages = async (req, res) => {
         const messages = await db_1.prisma.sentMessage.findMany({
             where: { user_id: user.id },
         });
-        return res.json(messages);
+        return res.json({ message: "ok", data: messages });
     }
     catch (error) {
         console.error(error);

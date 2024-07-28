@@ -25,11 +25,11 @@ function routes(app) {
     //   email: string;
     //   number: number;
     // }
-    app.post("/api/get-all-contacts", contact_controller_1.getAllContacts);
+    app.get("/api/get-all-contacts", contact_controller_1.getAllContacts);
     // body:{
     //   email: string;
     // }
-    app.post("/api/update-contacts", contact_controller_1.updateContact);
+    app.post("/api/update-contact", contact_controller_1.updateContact);
     // body: {
     //   name: string,
     //   number: number,
@@ -48,7 +48,7 @@ function routes(app) {
     //   tags: string[];
     // }
     // get templates
-    app.post("/api/get-template", template_controller_1.getTemplate);
+    app.get("/api/get-template", template_controller_1.getTemplate);
     // body: {email: string;}
     // edit templlates
     app.post("/api/edit-template", template_controller_1.updateTemplate);

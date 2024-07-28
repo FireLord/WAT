@@ -18,7 +18,7 @@ const newTemplate = async (req, res) => {
                 tags,
             },
         });
-        res.status(201).send("Template Saved");
+        res.status(201).json({ message: "Template Saved", data: template });
     }
     catch (error) {
         console.error(error);
@@ -28,8 +28,9 @@ const newTemplate = async (req, res) => {
 exports.newTemplate = newTemplate;
 const getTemplate = async (req, res) => {
     try {
+        const email = req.query.email;
         const user = await db_1.prisma.user.findUnique({
-            where: { email: req.body.email },
+            where: { email },
         });
         if (!user) {
             return res.status(404).send("User not found");
@@ -37,7 +38,7 @@ const getTemplate = async (req, res) => {
         const templates = await db_1.prisma.template.findMany({
             where: { user_id: user.id },
         });
-        return res.json(templates);
+        return res.json({ message: "ok", data: templates });
     }
     catch (error) {
         console.error(error);
@@ -56,7 +57,7 @@ const updateTemplate = async (req, res) => {
                 tags,
             },
         });
-        return res.json(template);
+        return res.json({ message: "updated sucessgully", data: template });
     }
     catch (error) {
         console.error(error);
@@ -70,7 +71,7 @@ const deleteTemplate = async (req, res) => {
         await db_1.prisma.template.delete({
             where: { id },
         });
-        return res.send("Template deleted");
+        return res.json({ message: "Template deleted" });
     }
     catch (error) {
         console.error(error);
@@ -87,7 +88,7 @@ const toggleTemplate = async (req, res) => {
                 toggle,
             },
         });
-        return res.json(template);
+        return res.json({ message: "state changed", data: template });
     }
     catch (error) {
         console.error(error);

@@ -13,11 +13,12 @@ const saveContact = async (req, res) => {
         const contact = await db_1.prisma.contact.create({
             data: {
                 user_id: user.id,
-                orignal_number: number,
+                original_number: number,
                 contact_name: name,
             },
         });
-        res.status(201).send("Contact Saved");
+        console.log(contact);
+        res.status(201).json({ message: "Contact Saved", data: { id: contact.id } });
     }
     catch (error) {
         console.error(error);
@@ -27,8 +28,9 @@ const saveContact = async (req, res) => {
 exports.saveContact = saveContact;
 const getAllContacts = async (req, res) => {
     try {
+        const email = req.query.email;
         const user = await db_1.prisma.user.findUnique({
-            where: { email: req.body.email },
+            where: { email },
         });
         if (!user) {
             return res.status(404).send("User not found");
@@ -36,7 +38,7 @@ const getAllContacts = async (req, res) => {
         const contacts = await db_1.prisma.contact.findMany({
             where: { user_id: user.id },
         });
-        return res.json(contacts);
+        return res.json({ message: "ok", data: contacts });
     }
     catch (error) {
         console.error(error);
@@ -51,10 +53,10 @@ const updateContact = async (req, res) => {
             where: { id },
             data: {
                 contact_name: name,
-                orignal_number: number,
+                original_number: number,
             },
         });
-        return res.json(contact);
+        return res.json({ message: "updated sucessfully", data: contact });
     }
     catch (error) {
         console.error(error);
@@ -68,7 +70,7 @@ const deleteContact = async (req, res) => {
         await db_1.prisma.contact.delete({
             where: { id },
         });
-        return res.send("Contact deleted");
+        return res.json({ message: "Contact deleted" });
     }
     catch (error) {
         console.error(error);
