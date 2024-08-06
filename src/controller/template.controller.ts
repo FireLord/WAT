@@ -1,3 +1,4 @@
+import { Template_type } from "@prisma/client";
 import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 
@@ -6,12 +7,18 @@ export const newTemplate = async (req: Request, res: Response) => {
     title,
     preset_msg,
     tags,
+    type,
+    regex,
+    welcome_msg_only,
     email,
   }: {
     email: string;
     title: string;
     preset_msg: string;
     tags: string[];
+    type: Template_type;
+    regex: string|null;
+    welcome_msg_only: boolean;
   } = req.body;
 
   try {
@@ -27,6 +34,9 @@ export const newTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
+        type,
+        welcome_msg_only,
+        regex
       },
     });
 
@@ -60,7 +70,7 @@ export const getTemplate = async (req: Request, res: Response) => {
 };
 
 export const updateTemplate = async (req: Request, res: Response) => {
-  const {id, title, preset_msg, tags } = req.body;
+  const {id, title, preset_msg, tags, type, welcome_msg_only, regex } = req.body;
 
   try {
     const template = await prisma.template.update({
@@ -69,6 +79,9 @@ export const updateTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
+        type,
+        welcome_msg_only,
+        regex
       },
     });
 

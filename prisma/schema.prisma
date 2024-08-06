@@ -18,15 +18,24 @@ model User {
   sent_messages SentMessage[]
 }
 
+enum Template_type {
+  EXACT
+  SIMILAR
+  EXPERT
+}
+
 model Template {
-  id            String        @id @default(cuid())
-  user_id       String
-  title         String
-  preset_msg    String
-  toggle        Boolean       @default(true)
-  tags          String[]
-  user          User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  sent_messages SentMessage[]
+  id               String        @id @default(cuid())
+  user_id          String
+  title            String
+  preset_msg       String
+  welcome_msg_only Boolean
+  type             Template_type
+  regex            String?
+  toggle           Boolean       @default(true)
+  tags             String[]
+  user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  sent_messages    SentMessage[]
 }
 
 model SentMessage {

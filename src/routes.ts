@@ -63,6 +63,9 @@ function routes(app: Express) {
   //   title: string;
   //   preset_msg: string;
   //   tags: string[];
+  //   type: EXPERT | SIMILAR | EXACT,
+  //   regex: string,
+  //   welcome_msg_only: Bool,
   // }
 
   // get templates
@@ -72,16 +75,19 @@ function routes(app: Express) {
   // edit templlates
   app.post("/api/edit-template", updateTemplate);
   // body: {
-  //     id: string, 
-  //     title: string, 
-  //     preset_msg: string, 
+  //     id: string,
+  //     title: string,
+  //     preset_msg: string,
   //     tags: string[];
+  //     type: EXPERT | SIMILAR | EXACT,
+  //     regex: string,
+  //     welcome_msg_only: Bool,
   //   }
 
   // toggle template
   app.post("/api/toggle-template", toggleTemplate);
   // body: {
-  //     id: string, 
+  //     id: string,
   //     toggle: boolean
   //   }
 
