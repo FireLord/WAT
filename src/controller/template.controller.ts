@@ -91,7 +91,9 @@ export const updateTemplate = async (req: Request, res: Response) => {
         toggle
       },
     });
-
+    console.log(typeof toggle);
+    console.log(typeof welcome_msg_only);
+    console.log(template);
     return res.json({message:"updated successfully",data:template});
   } catch (error) {
     console.error(error);
