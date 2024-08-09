@@ -11,6 +11,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     regex,
     welcome_msg_only,
     email,
+    delay
   }: {
     email: string;
     title: string;
@@ -19,6 +20,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     type: Template_type;
     regex: string|null;
     welcome_msg_only: boolean;
+    delay: number | null;
   } = req.body;
 
   try {
@@ -36,7 +38,8 @@ export const newTemplate = async (req: Request, res: Response) => {
         tags,
         type,
         welcome_msg_only,
-        regex
+        regex,
+        delay
       },
     });
 
@@ -70,7 +73,7 @@ export const getTemplate = async (req: Request, res: Response) => {
 };
 
 export const updateTemplate = async (req: Request, res: Response) => {
-  const {id, title, preset_msg, tags, type, welcome_msg_only, regex } = req.body;
+  const {id, title, preset_msg, tags, type, welcome_msg_only, regex, delay} = req.body;
 
   try {
     const template = await prisma.template.update({
@@ -81,7 +84,8 @@ export const updateTemplate = async (req: Request, res: Response) => {
         tags,
         type,
         welcome_msg_only,
-        regex
+        regex,
+        delay
       },
     });
 

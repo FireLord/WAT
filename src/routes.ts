@@ -1,4 +1,5 @@
 import axios from "axios";
+import { resend } from "lib/resend";
 import { Express, Request, Response } from "express";
 import { login, register } from "./controller/user.controller";
 import {
@@ -14,6 +15,7 @@ import {
   toggleTemplate,
   updateTemplate,
 } from "./controller/template.controller";
+import { checkOTP, resetPassword, resetPasswordRequest } from "./controller/password.controller";
 
 function routes(app: Express) {
   //health check
@@ -96,6 +98,10 @@ function routes(app: Express) {
   // body: {
   //     id: string
   //   }
+
+  app.post("/api/forgot-password-request", resetPasswordRequest)
+  app.post("/api/check-otp",checkOTP)
+  app.post("/api/reset-password",resetPassword)
 }
 
 export default routes;
