@@ -100,8 +100,19 @@ function routes(app: Express) {
   //   }
 
   app.post("/api/forgot-password-request", resetPasswordRequest)
+  // body: {
+  //     email: string
+  //   }
   app.post("/api/check-otp",checkOTP)
+  // body: {
+  //     email: string
+  //     otp: Int
+  //   }
   app.post("/api/reset-password",resetPassword)
+  // body: {
+  //     token: string
+  //     password: Int
+  //   }
 }
 
 export default routes;

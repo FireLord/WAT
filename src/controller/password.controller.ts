@@ -70,7 +70,7 @@ export const checkOTP = async (req: Request, res: Response)=>{
     //check if otp is older than 1 minute
     const otp_age = Date.now()- otp_db.updated_at.getTime()
     console.log("otp_age",otp_age);
-    if( otp_age > 60000) return res.status(401).send("OTP expired")
+    if( otp_age > 5*60000) return res.status(401).send("OTP expired")
     
     // generate and send a reset-password token 
     // const password_reset_token = 123456789  //generate a JWT token with email
