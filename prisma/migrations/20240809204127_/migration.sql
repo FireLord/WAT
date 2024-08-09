@@ -28,8 +28,8 @@ CREATE TABLE "Template" (
     "welcome_msg_only" BOOLEAN NOT NULL,
     "ruleType" TEXT NOT NULL,
     "regexValue" TEXT,
-    "toggle" BOOLEAN NOT NULL DEFAULT true,
-    "delaySecond" INTEGER,
+    "toggle" BOOLEAN NOT NULL,
+    "delaySecond" TEXT,
     "tags" TEXT[],
 
     CONSTRAINT "Template_pkey" PRIMARY KEY ("id")

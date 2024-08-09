@@ -20,7 +20,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     ruleType: string;
     regexValue: string | null;
     welcome_msg_only: boolean;
-    delaySecond: number | null;
+    delaySecond: string | null;
     toggle: boolean;
   } = req.body;
 

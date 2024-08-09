@@ -35,8 +35,8 @@ model Template {
   welcome_msg_only Boolean
   ruleType         String
   regexValue       String?
-  toggle           Boolean       @default(true)
-  delaySecond      Int?
+  toggle           Boolean
+  delaySecond      String?
   tags             String[]
   user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   sent_messages    SentMessage[]
