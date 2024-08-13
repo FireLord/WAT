@@ -31,7 +31,7 @@ export const resetPasswordRequest = async (req: Request, res: Response)=>{
     //send email with otp 
     (async function () {
         const { data, error } = await resend.emails.send({
-          from: 'Acme <onboarding@resend.dev>',
+          from: 'Acme <yadvendras20@gmail.com>',
           to: [email],
           subject: 'WAR verification code',
           html: `<strong>OTP: ${new_otp}</strong>`,
