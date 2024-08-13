@@ -37,10 +37,10 @@ export const newTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
-        ruleType,
+        rule_type:ruleType,
         welcome_msg_only,
-        regexValue,
-        delaySecond,
+        regex_value:regexValue,
+        delay_second:delaySecond,
         toggle
       },
     });
@@ -84,10 +84,10 @@ export const updateTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
-        ruleType,
+        rule_type:ruleType,
         welcome_msg_only,
-        regexValue,
-        delaySecond,
+        regex_value:regexValue,
+        delay_second:delaySecond,
         toggle
       },
     });
