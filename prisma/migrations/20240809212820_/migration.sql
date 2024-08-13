@@ -10,12 +10,26 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Otp" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "otp" INTEGER NOT NULL,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Otp_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Template" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "preset_msg" TEXT NOT NULL,
-    "toggle" BOOLEAN NOT NULL DEFAULT true,
+    "welcome_msg_only" BOOLEAN NOT NULL,
+    "ruleType" TEXT NOT NULL,
+    "regexValue" TEXT,
+    "toggle" BOOLEAN NOT NULL,
+    "delaySecond" TEXT,
     "tags" TEXT[],
 
     CONSTRAINT "Template_pkey" PRIMARY KEY ("id")
@@ -46,6 +60,12 @@ CREATE TABLE "Contact" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Otp_user_id_key" ON "Otp"("user_id");
+
+-- AddForeignKey
+ALTER TABLE "Otp" ADD CONSTRAINT "Otp_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Template" ADD CONSTRAINT "Template_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

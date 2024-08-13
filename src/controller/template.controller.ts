@@ -1,4 +1,3 @@
-import { Template_type } from "@prisma/client";
 import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 
@@ -7,20 +6,22 @@ export const newTemplate = async (req: Request, res: Response) => {
     title,
     preset_msg,
     tags,
-    type,
-    regex,
+    ruleType,
+    regexValue,
     welcome_msg_only,
     email,
-    delay
+    delaySecond,
+    toggle
   }: {
     email: string;
     title: string;
     preset_msg: string;
     tags: string[];
-    type: Template_type;
-    regex: string|null;
+    ruleType: string;
+    regexValue: string | null;
     welcome_msg_only: boolean;
-    delay: number | null;
+    delaySecond: string | null;
+    toggle: boolean;
   } = req.body;
 
   try {
@@ -36,10 +37,11 @@ export const newTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
-        type,
+        ruleType,
         welcome_msg_only,
-        regex,
-        delay
+        regexValue,
+        delaySecond,
+        toggle
       },
     });
 
@@ -73,7 +75,7 @@ export const getTemplate = async (req: Request, res: Response) => {
 };
 
 export const updateTemplate = async (req: Request, res: Response) => {
-  const {id, title, preset_msg, tags, type, welcome_msg_only, regex, delay} = req.body;
+  const {id, title, preset_msg, tags, ruleType, welcome_msg_only, regexValue, delaySecond, toggle} = req.body;
 
   try {
     const template = await prisma.template.update({
@@ -82,14 +84,17 @@ export const updateTemplate = async (req: Request, res: Response) => {
         title,
         preset_msg,
         tags,
-        type,
+        ruleType,
         welcome_msg_only,
-        regex,
-        delay
+        regexValue,
+        delaySecond,
+        toggle
       },
     });
-
-    return res.json({message:"updated sucessgully",data:template});
+    console.log(typeof toggle);
+    console.log(typeof welcome_msg_only);
+    console.log(template);
+    return res.json({message:"updated successfully",data:template});
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while updating the template");
@@ -110,27 +115,6 @@ export const deleteTemplate = async (req: Request, res: Response) => {
     res.status(500).send("An error occurred while deleting the template");
   }
 };
-
-export const toggleTemplate = async (req: Request, res: Response) => {
-  const { id, toggle } = req.body;
-
-  try {
-    const template = await prisma.template.update({
-      where: { id },
-      data: {
-        toggle,
-      },
-    });
-
-    return res.json({message:"state changed",data:template});
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("An error occurred while toggling the template");
-  }
-};
-
-
-
 
 
 // import { prisma } from "../lib/db";
@@ -192,18 +176,6 @@ export const toggleTemplate = async (req: Request, res: Response) => {
 //   const { id } = req.params;
 //   const template = await prisma.template.delete({
 //     where: { id },
-//   });
-//   return res.json(template);
-// }
-
-// export const toggleTemplate = async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const { toggle } = req.body;
-//   const template = await prisma.template.update({
-//     where: { id },
-//     data: {
-//       toggle
-//     },
 //   });
 //   return res.json(template);
 // }

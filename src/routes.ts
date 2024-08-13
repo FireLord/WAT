@@ -12,7 +12,6 @@ import {
   deleteTemplate,
   getTemplate,
   newTemplate,
-  toggleTemplate,
   updateTemplate,
 } from "./controller/template.controller";
 import { checkOTP, resetPassword, resetPasswordRequest } from "./controller/password.controller";
@@ -65,9 +64,10 @@ function routes(app: Express) {
   //   title: string;
   //   preset_msg: string;
   //   tags: string[];
-  //   type: EXPERT | SIMILAR | EXACT,
+  //   type: string,
   //   regex: string,
   //   welcome_msg_only: Bool,
+  //   delaySecond: string
   // }
 
   // get templates
@@ -81,16 +81,11 @@ function routes(app: Express) {
   //     title: string,
   //     preset_msg: string,
   //     tags: string[];
-  //     type: EXPERT | SIMILAR | EXACT,
-  //     regex: string,
+  //     ruleType: string,
+  //     regexValue: string,
+  //     toggle: Bool,
   //     welcome_msg_only: Bool,
-  //   }
-
-  // toggle template
-  app.post("/api/toggle-template", toggleTemplate);
-  // body: {
-  //     id: string,
-  //     toggle: boolean
+  //     delaySecond: string
   //   }
 
   // delete template
