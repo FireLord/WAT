@@ -5,6 +5,7 @@ export const newTemplate = async (req: Request, res: Response) => {
   const {
     title,
     preset_msg,
+    preset_msg_2,
     tags,
     ruleType,
     regexValue,
@@ -16,6 +17,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     email: string;
     title: string;
     preset_msg: string;
+    preset_msg_2: string;
     tags: string[];
     ruleType: string;
     regexValue: string | null;
@@ -36,6 +38,7 @@ export const newTemplate = async (req: Request, res: Response) => {
         user_id: user.id,
         title,
         preset_msg,
+        preset_msg_2,
         tags,
         rule_type:ruleType,
         welcome_msg_only,
@@ -75,7 +78,7 @@ export const getTemplate = async (req: Request, res: Response) => {
 };
 
 export const updateTemplate = async (req: Request, res: Response) => {
-  const {id, title, preset_msg, tags, ruleType, welcome_msg_only, regexValue, delaySecond, toggle} = req.body;
+  const {id, title, preset_msg, preset_msg_2, tags, ruleType, welcome_msg_only, regexValue, delaySecond, toggle} = req.body;
 
   try {
     const template = await prisma.template.update({
@@ -83,6 +86,7 @@ export const updateTemplate = async (req: Request, res: Response) => {
       data: {
         title,
         preset_msg,
+        preset_msg_2,
         tags,
         rule_type:ruleType,
         welcome_msg_only,

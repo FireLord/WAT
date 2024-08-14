@@ -16,15 +16,15 @@ model User {
   account       Template[]
   contact       Contact[]
   sent_messages SentMessage[]
-  otp Otp[]
+  otp           Otp[]
 }
 
-model Otp{
-  id            String        @id @default(cuid())
-  user_id          String @unique
-  otp Int
+model Otp {
+  id         String   @id @default(cuid())
+  user_id    String   @unique
+  otp        Int
   updated_at DateTime @default(now())
-  user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Template {
@@ -32,11 +32,12 @@ model Template {
   user_id          String
   title            String
   preset_msg       String
+  preset_msg_2     String?
   welcome_msg_only Boolean
-  rule_type         String
-  regex_value       String?
+  rule_type        String
+  regex_value      String?
   toggle           Boolean
-  delay_second      String?
+  delay_second     String?
   tags             String[]
   user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   sent_messages    SentMessage[]
