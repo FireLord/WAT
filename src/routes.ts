@@ -111,6 +111,11 @@ function routes(app: Express) {
   //   }
 
   app.post("/api/bug-report", saveBugReport)
+  // {
+  //   email: string;
+  //   title: string;
+  //   description: string;
+  // }
 }
 
 export default routes;
