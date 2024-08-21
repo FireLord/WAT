@@ -15,6 +15,7 @@ import {
   updateTemplate,
 } from "./controller/template.controller";
 import { checkOTP, resetPassword, resetPasswordRequest } from "./controller/password.controller";
+import { saveBugReport } from "./controller/misc.controller";
 
 function routes(app: Express) {
   //health check
@@ -108,6 +109,8 @@ function routes(app: Express) {
   //     token: string
   //     password: Int
   //   }
+
+  app.post("/api/bug-report", saveBugReport)
 }
 
 export default routes;

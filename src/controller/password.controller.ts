@@ -31,10 +31,10 @@ export const resetPasswordRequest = async (req: Request, res: Response)=>{
     //send email with otp 
     (async function () {
         const { data, error } = await resend.emails.send({
-          from: 'Test <support@whatstrek.com>',
+          from: 'WhatsTrek <support@whatstrek.com>',
           to: [email],
-          subject: 'WAR verification code',
-          html: `<strong>OTP: ${new_otp}</strong>`,
+          subject: 'WhatTrek: Password Reset Request',
+          html: `OTP: <strong>${new_otp}</strong>`,
         });
       
         if (error) {

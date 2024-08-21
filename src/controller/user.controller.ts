@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
-
+    console.log(user);
     if (!user) {
       return res.status(401).send("Invalid email or password");
     }

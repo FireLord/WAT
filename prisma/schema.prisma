@@ -62,3 +62,10 @@ model Contact {
   updated_at      DateTime @default(now())
   user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+
+model BugReports {
+  id          String @id @default(cuid())
+  email       String
+  title       String
+  description String
+}
