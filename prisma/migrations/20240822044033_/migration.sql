@@ -25,11 +25,12 @@ CREATE TABLE "Template" (
     "user_id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "preset_msg" TEXT NOT NULL,
+    "preset_msg_2" TEXT,
     "welcome_msg_only" BOOLEAN NOT NULL,
-    "ruleType" TEXT NOT NULL,
-    "regexValue" TEXT,
+    "rule_type" TEXT NOT NULL,
+    "regex_value" TEXT,
     "toggle" BOOLEAN NOT NULL,
-    "delaySecond" TEXT,
+    "delay_second" TEXT,
     "tags" TEXT[],
 
     CONSTRAINT "Template_pkey" PRIMARY KEY ("id")
@@ -56,6 +57,16 @@ CREATE TABLE "Contact" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Contact_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BugReports" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+
+    CONSTRAINT "BugReports_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
