@@ -64,11 +64,13 @@ function routes(app: Express) {
   //   email: string;
   //   title: string;
   //   preset_msg: string;
+  //   preset_msg_2: string?,
   //   tags: string[];
-  //   type: string,
-  //   regex: string,
+  //   rule_type: string,
+  //   regex_value: string,
+  //   toggle: Bool,
   //   welcome_msg_only: Bool,
-  //   delaySecond: string
+  //   delay_second: string?
   // }
 
   // get templates
@@ -81,12 +83,13 @@ function routes(app: Express) {
   //     id: string,
   //     title: string,
   //     preset_msg: string,
+  //     preset_msg_2: string?,
   //     tags: string[];
-  //     ruleType: string,
-  //     regexValue: string,
+  //     rule_type: string,
+  //     regex_value: string?,
   //     toggle: Bool,
   //     welcome_msg_only: Bool,
-  //     delaySecond: string
+  //     delay_second: string?
   //   }
 
   // delete template
