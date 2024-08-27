@@ -30,7 +30,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     // get the user_id
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({message:"User not found"});
     }
 
     const template = await prisma.template.create({
@@ -51,7 +51,7 @@ export const newTemplate = async (req: Request, res: Response) => {
     res.status(201).json({message:"Template Saved", data:template});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while saving the template");
+    res.status(500).json({message:"An error occurred while saving the template"});
   }
 };
 
@@ -63,7 +63,7 @@ export const getTemplate = async (req: Request, res: Response) => {
       where: { email},
     });
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({message:"User not found"});
     }
 
     const templates = await prisma.template.findMany({
@@ -73,7 +73,7 @@ export const getTemplate = async (req: Request, res: Response) => {
     return res.json({message:"ok",data:templates});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while fetching templates");
+    res.status(500).json({message:"An error occurred while fetching templates"});
   }
 };
 
@@ -101,7 +101,7 @@ export const updateTemplate = async (req: Request, res: Response) => {
     return res.json({message:"updated successfully",data:template});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while updating the template");
+    res.status(500).json({message:"An error occurred while updating the template"});
   }
 };
 
@@ -116,7 +116,7 @@ export const deleteTemplate = async (req: Request, res: Response) => {
     return res.json({message:"Template deleted"});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while deleting the template");
+    res.status(500).json({message:"An error occurred while deleting the template"});
   }
 };
 

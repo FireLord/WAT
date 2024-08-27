@@ -26,7 +26,7 @@ export const sentMessage = async (req: Request, res: Response) => {
     res.status(201).json({message:"Message saved", data:message});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while saving the message");
+    res.status(500).json({message:"An error occurred while saving the message"});
   }
 };
 
@@ -38,7 +38,7 @@ export const getAllMessages = async (req: Request, res: Response) => {
       where: { email },
     });
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({message:"User not found"});
     }
 
     const messages = await prisma.sentMessage.findMany({
@@ -48,7 +48,7 @@ export const getAllMessages = async (req: Request, res: Response) => {
     return res.json({message:"ok",data:messages});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while fetching messages");
+    res.status(500).json({message:"An error occurred while fetching messages"});
   }
 };
 

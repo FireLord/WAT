@@ -14,13 +14,13 @@ export const saveBugReport = async (req: Request, res: Response) => {
 
   try {
     if(!email || !title || !description) {
-      return res.status(400).send("Missing required fields");
+      return res.status(400).json({message:"Missing required fields"});
     }
     const user = await prisma.user.findUnique({
       where: {email},
     })
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({message:"User not found"});
     }
     const report = await prisma.bugReports.create({
       data: {
@@ -32,6 +32,6 @@ export const saveBugReport = async (req: Request, res: Response) => {
     res.status(201).json({message:"Report Saved"});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while saving the bug report");
+    res.status(500).json({message:"An error occurred while saving the bug report"});
   }
 };

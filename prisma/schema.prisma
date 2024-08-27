@@ -8,15 +8,29 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String
-  email         String        @unique
-  password      String
-  ph_number     Int?
+  id                  String    @id @default(cuid())
+  name                String
+  email               String    @unique
+  password            String
+  ph_number           Int?
+  subscription_expiry DateTime?
+
   account       Template[]
   contact       Contact[]
   sent_messages SentMessage[]
   otp           Otp[]
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id      String @id @default(cuid())
+  user_id String
+  ref_id  String @unique
+  amount Int
+  date DateTime
+  status String
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: NoAction)
 }
 
 model Otp {

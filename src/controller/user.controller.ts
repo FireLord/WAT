@@ -27,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
     res.status(201).json({message:"User created",data:user});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while creating the user");
+    res.status(500).json({message:"An error occurred while creating the user"});
   }
 };
 
@@ -38,13 +38,13 @@ export const login = async (req: Request, res: Response) => {
     const user = await prisma.user.findUnique({ where: { email } });
     console.log(user);
     if (!user) {
-      return res.status(401).send("Invalid email or password");
+      return res.status(401).json({message:"Invalid email or password"});
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).send("Invalid email or password");
+      return res.status(401).json({message:"Invalid email or password"});
     }
 
     const payload = {
@@ -54,7 +54,7 @@ export const login = async (req: Request, res: Response) => {
     return res.json({message:"login success",data:payload});
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while logging in");
+    res.status(500).json({message:"An error occurred while logging in"});
   }
 };
 
