@@ -1,7 +1,7 @@
 import axios from "axios";
 import { resend } from "lib/resend";
 import { Express, Request, Response } from "express";
-import { login, register } from "./controller/user.controller";
+import { login, refreshToken, register } from "./controller/user.controller";
 import {
   deleteContact,
   getAllContacts,
@@ -16,13 +16,14 @@ import {
 } from "./controller/template.controller";
 import { checkOTP, resetPassword, resetPasswordRequest } from "./controller/password.controller";
 import { saveBugReport } from "./controller/misc.controller";
+import { authenticate } from "../middleware/authenticate-jwt";
 
 function routes(app: Express) {
   //health check
   app.get("/api/test", async (req: Request, res: Response) => {
     res.send("Server is healthy");
   });
-
+  
   app.post("/api/register", register);
   // body: {
   //   email: string;
@@ -34,6 +35,10 @@ function routes(app: Express) {
   //   email: string;
   //   password: string;
   // }
+  app.post("/api/refresh-token", refreshToken);
+
+
+
 
   app.post("/api/save-contact", saveContact);
   // body: {

@@ -2,6 +2,7 @@ import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/generate-jwt";
+import {loginService, refreshTokenService}  from "../service/auth.service";
 
 export const register = async (req: Request, res: Response) => {
   const {
@@ -35,22 +36,24 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    console.log(user);
-    if (!user) {
-      return res.status(401).json({message:"Invalid email or password"});
-    }
+    // const user = await prisma.user.findUnique({ where: { email } });
+    // console.log(user);
+    // if (!user) {
+    //   return res.status(401).json({message:"Invalid email or password"});
+    // }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) {
-      return res.status(401).json({message:"Invalid email or password"});
-    }
+    // if (!isPasswordValid) {
+    //   return res.status(401).json({message:"Invalid email or password"});
+    // }
 
-    const payload = {
-      name: user.name,
-      email,
-    };
+    // const payload = {
+    //   name: user.name,
+    //   email,
+    // };
+    const payload = await loginService(email, password);
+    
     return res.json({message:"login success",data:payload});
   } catch (error) {
     console.error(error);
@@ -58,6 +61,15 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const {refreshToken} = req.body;
+    const newTokens = await refreshTokenService(refreshToken);
+    return res.json({message:"refresh token success",data:newTokens});
+  } catch (error) {
+   return res.status(401).json({message:"refresh token failed"});
+  }
+}
 
 
 
