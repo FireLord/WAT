@@ -36,22 +36,33 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    // const user = await prisma.user.findUnique({ where: { email } });
-    // console.log(user);
-    // if (!user) {
-    //   return res.status(401).json({message:"Invalid email or password"});
-    // }
+    const user = await prisma.user.findUnique({ where: { email } });
+    console.log(user);
+    if (!user) {
+      return res.status(401).json({message:"Invalid email or password"});
+    }
 
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    // if (!isPasswordValid) {
-    //   return res.status(401).json({message:"Invalid email or password"});
-    // }
+    if (!isPasswordValid) {
+      return res.status(401).json({message:"Invalid email or password"});
+    }
 
-    // const payload = {
-    //   name: user.name,
-    //   email,
-    // };
+    const payload = {
+      name: user.name,
+      email,
+    };
+    
+    return res.json({message:"login success",data:payload});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message:"An error occurred while logging in"});
+  }
+};
+export const login_v2 = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
     const payload = await loginService(email, password);
     
     return res.json({message:"login success",data:payload});

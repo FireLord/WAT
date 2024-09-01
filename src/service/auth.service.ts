@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 // const User = require('../models/userModel');
 
 const generateAccessToken = (user) => {
+  console.log(process.env.ACCESS_TOKEN_EXPIRY);
   return jwt.sign({ id: user.id, email: user.email }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
 };
 
@@ -42,9 +43,9 @@ export const refreshTokenService = async (refreshToken) => {
     console.log(refreshToken)
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
     // const user = await User.findById(decoded.userId);
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
-    console.log("user", user)
+    // console.log("user", user)
 
     if (!user) {
       throw new Error('User not found');

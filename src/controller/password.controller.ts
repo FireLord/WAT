@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 import { resend } from "../lib/resend";
 import { generateToken } from "../lib/generate-jwt";
-import { authenticateJWT } from "../../middleware/authenticate-jwt";
+import { authenticateJWT } from "../middleware/authenticate-jwt";
 export const resetPasswordRequest = async (req: Request, res: Response)=>{
     const {email} = req.body;
     const user = await prisma.user.findUnique({where:{email}})

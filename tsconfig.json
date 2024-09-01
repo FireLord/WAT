@@ -21,6 +21,6 @@
       "resolveJsonModule": true,
       "baseUrl": "src"
     },
-    "include": ["src/**/*.ts", "src/lib/**/*.ts", "src/worker.ts","types/**/*.d.ts" ,  "src/keys-data.js", "middleware/authenticate-jwt.ts"],
+    "include": ["src/**/*.ts", "src/lib/**/*.ts", "src/worker.ts","types/**/*.d.ts" ,  "src/keys-data.js", "src/middleware/authenticate-jwt.ts"],
     "exclude": ["node_modules"]
   }

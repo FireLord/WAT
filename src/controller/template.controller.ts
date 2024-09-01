@@ -1,3 +1,4 @@
+import { authenticate } from "../middleware/authenticate-jwt";
 import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 
@@ -27,6 +28,13 @@ export const newTemplate = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
+    const authHeader = req.headers['authorization'];
+    const authObj=await authenticate(authHeader)
+    if(!authObj.id){
+      return res.status(401).json({ message: authObj.message });
+    }
+    console.log("v2: newTemplate->",new Date());
+
     // get the user_id
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
@@ -57,6 +65,14 @@ export const newTemplate = async (req: Request, res: Response) => {
 
 export const getTemplate = async (req: Request, res: Response) => {
   try {
+    const authHeader = req.headers['authorization'];
+    const authObj=await authenticate(authHeader)
+    if(!authObj.id){
+      return res.status(401).json({ message: authObj.message });
+    }
+    console.log("v2: getTemplate->",new Date());
+
+
     const email = req.query.email as string;
 
     const user = await prisma.user.findUnique({
@@ -81,6 +97,14 @@ export const updateTemplate = async (req: Request, res: Response) => {
   const {id, title, preset_msg, preset_msg_2, tags, rule_type, welcome_msg_only, regex_value, delay_second, toggle} = req.body;
 
   try {
+    const authHeader = req.headers['authorization'];
+    const authObj=await authenticate(authHeader)
+    if(!authObj.id){
+      return res.status(401).json({ message: authObj.message });
+    }
+    console.log("v2: updateTemplate->",new Date());
+
+
     const template = await prisma.template.update({
       where: { id },
       data: {
@@ -109,6 +133,14 @@ export const deleteTemplate = async (req: Request, res: Response) => {
   const { id } = req.body;
 
   try {
+    const authHeader = req.headers['authorization'];
+    const authObj=await authenticate(authHeader)
+    if(!authObj.id){
+      return res.status(401).json({ message: authObj.message });
+    }
+    console.log("v2: deleteTemplate->",new Date());
+
+
     await prisma.template.delete({
       where: { id },
     });
