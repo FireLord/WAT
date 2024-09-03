@@ -1,7 +1,7 @@
 import axios from "axios";
 import { resend } from "lib/resend";
 import { Express, Request, Response } from "express";
-import { login, login_v2, refreshToken, register } from "./controller/user.controller";
+import { login, login_v2, refreshToken, register, verifyAccount } from "./controller/user.controller";
 import {
   deleteContact,
   getAllContacts,
@@ -159,7 +159,7 @@ app.post("/v2/register", register);
   // }
   app.post("/v2/refresh-token", refreshToken);
 
-
+  app.get("/v2/verify",verifyAccount)
 
 
   app.post("/v2/save-contact", saveContact);

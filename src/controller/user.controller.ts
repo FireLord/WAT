@@ -1,8 +1,11 @@
 import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../lib/generate-jwt";
-import {loginService, refreshTokenService}  from "../service/auth.service";
+import {generateVerificationToken, loginService, refreshTokenService}  from "../service/auth.service";
+import { Jwt } from "jsonwebtoken";
+const jwt = require('jsonwebtoken');
+
+import { verify } from "crypto";
 
 export const register = async (req: Request, res: Response) => {
   const {
@@ -24,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
         password: hashedPassword,
       },
     });
-
+    sendVerificationMail(user.id, user.email);
     res.status(201).json({message:"User created",data:user});
   } catch (error) {
     console.error(error);
@@ -82,6 +85,54 @@ export const refreshToken = async (req: Request, res: Response) => {
   }
 }
 
+
+ const sendVerificationMail = async (id:string,email:string) => {
+  console.log("email", email);
+  //generate token with email
+  const token = await generateVerificationToken({ id, email });
+  const verificationUrl = `${process.env.BASE_URL}/v2/verify?token=${token}`;
+  (async function () {
+    const { data, error } = await resend.emails.send({
+      from: 'WhatsTrek <support@whatstrek.com>',
+      to: [email],
+      subject: 'WhatTrek: Email Verification',
+      html: `<a href=${verificationUrl}>Click Here</a> Or go to: ${verificationUrl} <br/> If you did not request this email, please ignore it`,
+    });
+  
+    if (error) {
+      return console.error({ error });
+    }
+  
+    console.log({ data });
+  })();
+}
+
+
+export const verifyAccount = async (req: Request, res: Response) => {
+ try {
+  const { token } = req.query;
+  // const { id } = verify(token, process.env.JWT_SECRET) as { id: string };
+  const {id}=jwt.verify(token, process.env.JWT_VERIFICATION_SECRET);
+  const user = await prisma.user.update({
+    where: { id },
+    data: { verified: true },
+  });
+  console.log("verified", user);
+  return res.json({ message: "Account verified", data: user.email });
+ } catch (error) {
+  console.log(error);
+  
+  if (error.name === 'TokenExpiredError') {
+    res.status(400).send({ message: "Verification token expired" });
+    // throw new Error('Refresh token expired');
+  }
+  res.status(400).send({ message: "Invalid verification token" });
+
+  // throw new Error('Invalid refresh token');
+ }
+}
+
+  // Send verification email
 
 
 // import { prisma } from "../lib/db";

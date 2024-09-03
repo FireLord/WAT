@@ -6,6 +6,9 @@ const generateAccessToken = (user) => {
   console.log(process.env.ACCESS_TOKEN_EXPIRY);
   return jwt.sign({ id: user.id, email: user.email }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
 };
+export const generateVerificationToken = (user) => {
+  return jwt.sign({ id: user.id, email: user.email }, process.env.JWT_VERIFICATION_SECRET, { expiresIn: process.env.VERIFICATION_TOKEN_EXPIRY });
+};
 
 const generateRefreshToken = (user) => {
   // return jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "1d" });

@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 
 export const revenueCatHook = async (req: Request, res: Response) => {
     try {
+    console.log(req.body.event, "...\n\n");
     const {event_timestamp, product_id, period_type, purchased_at, expiration_at, environment, presented_offering_id, transaction_id, original_transaction_id, country_code, app_user_id, original_app_user_id, is_trial_conversion, currency, price, price_in_purchased_currency, type, store, takehome_percentage, tax_percentage, commission_percentage, renewal_number, offer_code} =req.body.event
     let user_id;
     const user = await prisma.user.findUnique({
@@ -53,7 +54,6 @@ export const revenueCatHook = async (req: Request, res: Response) => {
             subscription_expiry: new Date(expiration_at)
         }
     })
-    console.log(req.body.event, "...\n\n");
 
     } catch (error) {
         console.error(error);
