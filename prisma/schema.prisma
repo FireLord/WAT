@@ -15,23 +15,46 @@ model User {
   ph_number           Int?
   subscription_expiry DateTime?
 
-  account       Template[]
-  contact       Contact[]
-  sent_messages SentMessage[]
-  otp           Otp[]
-  transactions  Transaction[]
+  account        Template[]
+  contact        Contact[]
+  sent_messages  SentMessage[]
+  otp            Otp[]
+  transactions   Transaction[]
+  revenue_cat_id RevenueCatId[]
 }
 
 model Transaction {
-  id      String @id @default(cuid())
-  user_id String
-  ref_id  String @unique
-  amount Int
-  date DateTime
-  status String
+  id                          String   @id @default(cuid())
+  user_id                     String
+  event_timestamp             BigInt?
+  product_id                  String?
+  period_type                 String?
+  purchased_at                BigInt?
+  expiration_at               BigInt?
+  environment                 String?
+  presented_offering_id       String?
+  transaction_id              String?
+  original_transaction_id     String?
+  country_code                String?
+  app_user_id                 String?
+  original_app_user_id        String?
+  is_trial_conversion         Boolean?
+  currency                    String?
+  price                       Float?
+  price_in_purchased_currency Float?
+  type                        String?
+  store                       String?
+  takehome_percentage         Float?
+  tax_percentage              Float?
+  commission_percentage       Float?
+  renewal_number              Int?
+  offer_code                  String?
+  status                      String?
 
-  user    User   @relation(fields: [user_id], references: [id], onDelete: NoAction)
+  user User @relation(fields: [user_id], references: [id], onDelete: NoAction)
 }
+
+// const event =[event_timestamp, product_id, period_type, purchased_at, expiration_at, environment, presented_offering_id, transaction_id, original_transaction_id, country_code, app_user_id, original_app_user_id, is_trial_conversion, currency, price, price_in_purchased_currency, type, store, takehome_percentage, tax_percentage, commission_percentage, renewal_number, offer_code]
 
 model Otp {
   id         String   @id @default(cuid())
@@ -82,4 +105,11 @@ model BugReports {
   email       String
   title       String
   description String
+}
+
+model RevenueCatId {
+  id      String @id @default(cuid())
+  user_id String @unique
+  rc_id   String @unique
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

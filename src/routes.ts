@@ -17,7 +17,7 @@ import {
 import { checkOTP, resetPassword, resetPasswordRequest } from "./controller/password.controller";
 import { saveBugReport } from "./controller/misc.controller";
 import { authenticate } from "./middleware/authenticate-jwt";
-import { revenueCatHook } from "./controller/revenuecat.controller";
+import { revenueCatHook, setRevenueCatId } from "./controller/revenuecat.controller";
 
 function routes(app: Express) {
   //health check
@@ -250,7 +250,8 @@ app.post("/v2/register", register);
 
 
   //...........................................RC webhook.........................................
-  app.post("/api/rc/webhook", revenueCatHook)
+  app.post("/v2/rc/webhook", revenueCatHook)
+  app.post("/v2/rc/set-id", setRevenueCatId)
 }
 
 export default routes;
