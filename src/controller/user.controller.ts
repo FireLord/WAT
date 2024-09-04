@@ -1,11 +1,9 @@
 import { prisma } from "../lib/db";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import {generateVerificationToken, loginService, refreshTokenService}  from "../service/auth.service";
-import { Jwt } from "jsonwebtoken";
+import {generateAccessToken, generateRefreshToken, generateVerificationToken, loginService, refreshTokenService}  from "../service/auth.service";
+import { authenticate } from "../middleware/authenticate-jwt";
 const jwt = require('jsonwebtoken');
-
-import { verify } from "crypto";
 
 export const register = async (req: Request, res: Response) => {
   const {
@@ -28,7 +26,9 @@ export const register = async (req: Request, res: Response) => {
       },
     });
     sendVerificationMail(user.id, user.email);
-    res.status(201).json({message:"User created",data:user});
+    const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+    res.status(201).json({message:"User created",data:{name:user.name, email:user.email, verified:user.verified, accessToken, refreshToken}});
   } catch (error) {
     console.error(error);
     res.status(500).json({message:"An error occurred while creating the user"});
@@ -106,6 +106,24 @@ export const refreshToken = async (req: Request, res: Response) => {
     console.log({ data });
   })();
 }
+
+export const resendVerificationMail = async (req: Request, res: Response) => {
+  try {
+    //authenticate
+    const authHeader = req.headers['authorization'];
+    const authObj=await authenticate(authHeader)
+    if(!authObj.id){
+      return res.status(401).json({ message: authObj.message });
+    }
+    console.log("v2: resendVerificationMail->",new Date());
+
+    // const { id, email } = req.body;
+  sendVerificationMail(authObj.id,authObj.email);
+  return res.json({ message: "Verification email sent" });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred while sending verification email" });
+  }
+};
 
 
 export const verifyAccount = async (req: Request, res: Response) => {
