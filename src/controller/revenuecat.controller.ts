@@ -51,7 +51,7 @@ export const revenueCatHook = async (req: Request, res: Response) => {
             id:user_id
         },
         data:{
-            subscription_expiry: new Date(expiration_at)
+            subscription_expiry: new Date(Number(expiration_at))
         }
     })
 
