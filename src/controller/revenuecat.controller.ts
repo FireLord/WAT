@@ -48,7 +48,7 @@ export const revenueCatHook = async (req: Request, res: Response) => {
 
     await prisma.user.update({
         where:{
-            id:user.id
+            id:user_id
         },
         data:{
             subscription_expiry: new Date(expiration_at)
@@ -85,6 +85,8 @@ export const setRevenueCatId = async (req: Request, res: Response) => {
                 rc_id:revenueCatId
             }
         })
+
+        return res.json({message:"app_user_id from rc is mapped to user_id"});
 
 
     } catch (error) {

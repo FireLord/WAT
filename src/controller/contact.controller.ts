@@ -14,12 +14,12 @@ export const saveContact = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
+    console.log("v2: saveContact->",new Date());
     const authHeader = req.headers['authorization'];
     const authObj=await authenticate(authHeader)
     if(!authObj.id){
       return res.status(401).json({ message: authObj.message });
     }
-    console.log("v2: saveContact->",new Date());
 
 
     // get the user_id
@@ -46,17 +46,17 @@ export const saveContact = async (req: Request, res: Response) => {
 
 export const getAllContacts = async (req: Request, res: Response) => {
   try {
+    console.log("v2: getAllContacts->",new Date());
     const authHeader = req.headers['authorization'];
     const authObj=await authenticate(authHeader)
     if(!authObj.id){
       return res.status(401).json({ message: authObj.message });
     }
-    console.log("v2: getAllContacts->",new Date());
 
 
-    const email = req.query.email as string;
+    // const email = req.query.email as string;
     const user = await prisma.user.findUnique({
-      where: {email},
+      where: {email: authObj.email},
     });
     if (!user) {
       return res.status(404).json({message:"User not found"});
@@ -65,8 +65,15 @@ export const getAllContacts = async (req: Request, res: Response) => {
     const contacts = await prisma.contact.findMany({
       where: { user_id: user.id },
     });
+    const payload = contacts.map((contact) => {
+      return {
+        id: contact.id,
+        name: contact.contact_name,
+        number: contact.original_number,
+      };
+    })
 
-    return res.json({message:"ok",data:contacts});
+    return res.json({message:"ok",data:payload});
   } catch (error) {
     console.error(error);
     res.status(500).json({message:"An error occurred while fetching contacts"});

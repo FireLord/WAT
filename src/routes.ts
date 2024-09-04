@@ -167,13 +167,11 @@ app.post("/v2/register", register);
   // body: {
   //   name: string;
   //   email: string;
-  //   number: number;
+  //   number: string;
   // }
 
   app.get("/v2/get-all-contacts", getAllContacts);
-  // body:{
-  //   email: string;
-  // }
+  
 
   app.post("/v2/update-contact", updateContact);
   // body: {

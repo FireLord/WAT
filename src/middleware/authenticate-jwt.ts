@@ -28,7 +28,9 @@ export const authenticate = (authHeader) => {
     console.log(authHeader, !token)
   if (!token) {
     // return res.status(401).json({ message: 'Access token missing' });
-    return new Error('Access token missing');
+    console.log("missing access token");
+    // return new Error('Access token missing');
+    return {message:"missing access token"}
   }
 
   const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
@@ -36,11 +38,13 @@ export const authenticate = (authHeader) => {
       if (err.name === 'TokenExpiredError') {
         // return res.status(401).json({ message: 'Access token expired' });
         console.log("expired");
-        return new Error('Access token expired');
+        // return new Error('Access token expired');
+        return {message:"Access token expired"}
       }
       // return res.status(403).json({ message: 'Invalid access token' });
       console.log("invalid");
-      return new Error('Invalid access token');
+      // return new Error('Invalid access token');
+      return {message:"Invalid access token"}
     }
 
     // req.locals.user = decoded; // Add decoded information (like userId) to the request
