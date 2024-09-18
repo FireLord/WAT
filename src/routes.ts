@@ -246,6 +246,11 @@ app.post("/v2/register", register);
   //   description: string;
   // }      
 
+  app.get("/v2/tutorial-url",(req: Request, res: Response) => {
+    const url = "https://www.youtube.com/shorts/n4x7Ggr6G7Q?feature=share"
+
+    res.send(url)
+  })
 
 
   //...........................................RC webhook.........................................

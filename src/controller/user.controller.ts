@@ -141,7 +141,7 @@ export const resendVerificationMail = async (req: Request, res: Response) => {
     console.log("v2: resendVerificationMail->", new Date());
 
     // const { id, email } = req.body;
-    sendVerificationMail(authObj.id, authObj.email);
+    sendVerificationMail(authObj.id, authObj.email);  
     return res.json({ message: "Verification email sent" });
   } catch (error) {
     res
