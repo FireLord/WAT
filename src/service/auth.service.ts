@@ -33,6 +33,17 @@ export const loginService = async (email, password) => {
   // Save or update refresh token in the database (optional, for tracking)
   // await saveRefreshTokenToDB(user._id, refreshToken);
 
+  // delete all previously created templates
+  const contacts = await prisma.template.findMany({
+    where: { user_id: user.id },
+  })
+  if(contacts.length>0){
+    console.log("contacts", contacts);
+    await prisma.template.deleteMany({
+      where: { user_id: user.id },
+    })
+  }
+
   return {name:user.name, email:user.email, verified:user.verified, accessToken, refreshToken};
 };
 

@@ -126,6 +126,7 @@ const sendVerificationMail = async (id: string, name: string, email: string) => 
       Once verified, you'll be all set to explore features like lead automation, contact management, and more.<br/>
       If you didn’t sign up, no need to worry – just ignore this email.<br/>
       Welcome aboard!<br/>
+      Here's a Introduction video to get you started:<br/>
       Regards,<br/>
       The Whatstrek Team`
     });

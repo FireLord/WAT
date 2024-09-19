@@ -41,6 +41,23 @@ export const newTemplate = async (req: Request, res: Response) => {
       return res.status(404).json({message:"User not found"});
     }
 
+    //check is the tags are unique
+    let unique = true
+    const templates = await prisma.template.findMany({
+      where: { user_id: user.id },
+    })
+    if (templates.length > 0) {
+      templates.map((template) => {
+        // Check if any tag in `tags` is present in `template.tags`
+        if (tags.some(tag => template.tags.includes(tag))) {
+          // Send error response
+          unique = false
+          return
+        }
+      });
+    }
+    if(!unique) return res.status(400).json({message:"Use different tags! This tag is already used"});
+
     const template = await prisma.template.create({
       data: {
         user_id: user.id,
@@ -72,7 +89,7 @@ export const getTemplate = async (req: Request, res: Response) => {
     }
     console.log("v2: getTemplate->",new Date());
 
-
+    
     const email = req.query.email as string;
 
     const user = await prisma.user.findUnique({
@@ -152,66 +169,3 @@ export const deleteTemplate = async (req: Request, res: Response) => {
   }
 };
 
-
-// import { prisma } from "../lib/db";
-// import { Request, Response } from "express";
-
-// export const newTemplate = async (req: Request, res: Response) => {
-//   const {
-//     title,
-//     preset_msg,
-//     tags,
-//     email,
-//   }: {
-//     email: string;
-//     title: string;
-//     preset_msg: string;
-//     tags: string[];
-//   } = req.body;
-
-//   // get the user_id
-//   const user = await prisma.user.findUnique({ where: { email } });
-
-//   const template = await prisma.template.create({
-//     data: {
-//       user_id: user?.id,
-//       title,
-//       preset_msg,
-//       tags,
-//     },
-//   });
-
-//   res.status(201).send("Template Saved");
-// };
-
-// export const getTemplate = async (req: Request, res: Response) => {
-//   const user = await prisma.user.findUnique({
-//     where: { email: req.body.email },
-//   });
-//   const templates = await prisma.template.findMany({
-//     where: { user_id: user?.id },
-//   });
-//   return res.json(templates);
-// };
-
-// export const updateTemplate= async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const { title, preset_msg, tags } = req.body;
-//   const template = await prisma.template.update({
-//     where: { id },
-//     data: {
-//       title,
-//       preset_msg,
-//       tags,
-//     },
-//   });
-//   return res.json(template);
-// };
-
-// export const deleteTemplate = async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const template = await prisma.template.delete({
-//     where: { id },
-//   });
-//   return res.json(template);
-// }
