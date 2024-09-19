@@ -127,6 +127,15 @@ const sendVerificationMail = async (id: string, name: string, email: string) => 
       If you didn’t sign up, no need to worry – just ignore this email.<br/>
       Welcome aboard!<br/>
       Here's a Introduction video to get you started:<br/>
+      <iframe
+          src="https://www.youtube.com/embed/lJIB4Ct5y2U"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          title="video"
+          className="h-[300px] md:h-[400px] w-[100%] md:w-[70%] rounded-md"
+        />
+      <br/>
+      https://youtu.be/lJIB4Ct5y2U <br/> <br/>
       Regards,<br/>
       The Whatstrek Team`
     });
