@@ -25,7 +25,8 @@ export const register = async (req: Request, res: Response) => {
   try {
     //check if the user already exist
     const alreadyExist = await prisma.user.findUnique({ where: { email } });
-    if(alreadyExist) return res.status(400).json({message:"User already exist"});
+    if (alreadyExist)
+      return res.status(400).json({ message: "User already exist" });
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
@@ -34,29 +35,25 @@ export const register = async (req: Request, res: Response) => {
         password: hashedPassword,
       },
     });
-    const isMailSent = await sendVerificationMail(user.id, user.email);
+    const isMailSent = await sendVerificationMail(user.id, user.name, user.email);
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    res
-      .status(201)
-      .json({
-        message: `User created successfully. ${isMailSent}.`,
-        data: {
-          name: user.name,
-          email: user.email,
-          verified: user.verified,
-          accessToken,
-          refreshToken,
-        },
-      });
+    res.status(201).json({
+      message: `User created successfully. ${isMailSent}.`,
+      data: {
+        name: user.name,
+        email: user.email,
+        verified: user.verified,
+        accessToken,
+        refreshToken,
+      },
+    });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while creating the user",
-        error: error,
-      });
+    res.status(500).json({
+      message: "An error occurred while creating the user",
+      error: error,
+    });
   }
 };
 
@@ -96,7 +93,7 @@ export const login_v2 = async (req: Request, res: Response) => {
     return res.json({ message: "login success", data: payload });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Invalid Credentials"  });
+    res.status(500).json({ message: "Invalid Credentials" });
   }
 };
 
@@ -106,11 +103,13 @@ export const refreshToken = async (req: Request, res: Response) => {
     const newTokens = await refreshTokenService(refreshToken);
     return res.json({ message: "refresh token success", data: newTokens });
   } catch (error) {
-    return res.status(500).json({ message: "Invalid or expired refresh token." });
+    return res
+      .status(500)
+      .json({ message: "Invalid or expired refresh token." });
   }
 };
 
-const sendVerificationMail = async (id: string, email: string) => {
+const sendVerificationMail = async (id: string, name: string, email: string) => {
   console.log("email", email);
   //generate token with email
   const token = await generateVerificationToken({ id, email });
@@ -119,17 +118,25 @@ const sendVerificationMail = async (id: string, email: string) => {
     const { data, error } = await resend.emails.send({
       from: "WhatsTrek <support@whatstrek.com>",
       to: [email],
-      subject: "WhatTrek: Email Verification",
-      html: `<a href=${verificationUrl}>Click Here</a> Or go to: ${verificationUrl} <br/> If you did not request this email, please ignore it`,
+      subject: "Just One More Step – Verify Your Whatstrek Email!",
+      html: `
+      Hi ${name},
+      You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the link below:
+      <a href=${verificationUrl}>Verify My Email</a>
+      Once verified, you'll be all set to explore features like lead automation, contact management, and more.
+      If you didn’t sign up, no need to worry – just ignore this email.
+      Welcome aboard!
+      Regards,
+      The Whatstrek Team`
     });
 
     if (error) {
       console.error({ error });
-      return "Error while sending verification email, please try again later. If the issue persists, please report this bug."
+      return "Error while sending verification email, please try again later. If the issue persists, please report this bug.";
     }
 
     console.log({ data });
-    return "Verification email sent"
+    return "Verification email sent";
   })();
 };
 
@@ -144,12 +151,15 @@ export const resendVerificationMail = async (req: Request, res: Response) => {
     console.log("v2: resendVerificationMail->", new Date());
 
     // const { id, email } = req.body;
-    sendVerificationMail(authObj.id, authObj.email);  
+    sendVerificationMail(authObj.id, authObj.name, authObj.email);
     return res.json({ message: "Verification email sent" });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error while sending verification email, please try again later. If the issue persists, please report this bug." });
+      .json({
+        message:
+          "Error while sending verification email, please try again later. If the issue persists, please report this bug.",
+      });
   }
 };
 
@@ -163,17 +173,20 @@ export const verifyAccount = async (req: Request, res: Response) => {
       data: { verified: true },
     });
     console.log("verified", user);
-    return res.json({ message: "Account verified", data: user.email });
+    return res.json({ message: "Account verified. Please close this tab.", data: user.email });
   } catch (error) {
     console.log(error);
 
     if (error.name === "TokenExpiredError") {
-      res.status(400).send({ message: "Verification Link expired, please try again" });
+      res
+        .status(400)
+        .send({ message: "Verification Link expired, please try again" });
       // throw new Error('Refresh token expired');
     }
-    res.status(400).send({ message: "Invalid verification token, please try again" });
+    res
+      .status(400)
+      .send({ message: "Invalid verification token, please try again" });
 
     // throw new Error('Invalid refresh token');
   }
 };
-

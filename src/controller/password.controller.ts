@@ -33,8 +33,16 @@ export const resetPasswordRequest = async (req: Request, res: Response)=>{
         const { data, error } = await resend.emails.send({
           from: 'WhatsTrek <support@whatstrek.com>',
           to: [email],
-          subject: 'WhatTrek: Password Reset Request',
-          html: `OTP: <strong>${new_otp}</strong>`,
+          subject: 'Forgot Your Password? Let’s Fix That!',
+          html: `
+          Hi ${user.name},
+          No stress—resetting your Whatstrek password is easy. Here's your OTP to set a new password.
+          OTP: <strong>${new_otp}</strong>
+          If you didn’t request this, rest assured, your account is safe. Feel free to reach out if you need any help.
+          We’ve got your back!
+          Regards,
+          The Whatstrek Team
+          `,
         });
       
         if (error) {
