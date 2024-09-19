@@ -120,13 +120,13 @@ const sendVerificationMail = async (id: string, name: string, email: string) => 
       to: [email],
       subject: "Just One More Step – Verify Your Whatstrek Email!",
       html: `
-      Hi ${name},
-      You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the link below:
-      <a href=${verificationUrl}>Verify My Email</a>
-      Once verified, you'll be all set to explore features like lead automation, contact management, and more.
-      If you didn’t sign up, no need to worry – just ignore this email.
-      Welcome aboard!
-      Regards,
+      Hi ${name},<br/>
+      You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the link below:<br/>
+      <a href=${verificationUrl}>Verify My Email</a><br/>
+      Once verified, you'll be all set to explore features like lead automation, contact management, and more.<br/>
+      If you didn’t sign up, no need to worry – just ignore this email.<br/>
+      Welcome aboard!<br/>
+      Regards,<br/>
       The Whatstrek Team`
     });
 

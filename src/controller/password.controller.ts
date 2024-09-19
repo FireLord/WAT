@@ -35,12 +35,12 @@ export const resetPasswordRequest = async (req: Request, res: Response)=>{
           to: [email],
           subject: 'Forgot Your Password? Let’s Fix That!',
           html: `
-          Hi ${user.name},
-          No stress—resetting your Whatstrek password is easy. Here's your OTP to set a new password.
-          OTP: <strong>${new_otp}</strong>
-          If you didn’t request this, rest assured, your account is safe. Feel free to reach out if you need any help.
-          We’ve got your back!
-          Regards,
+          Hi ${user.name},<br/>
+          No stress—resetting your Whatstrek password is easy. Here's your OTP to set a new password.<br/>
+          OTP: <strong>${new_otp}</strong><br/>
+          If you didn’t request this, rest assured, your account is safe. Feel free to reach out if you need any help.<br/>
+          We’ve got your back!<br/>
+          Regards,<br/>
           The Whatstrek Team
           `,
         });
