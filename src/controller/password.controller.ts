@@ -9,7 +9,7 @@ export const resetPasswordRequest = async (req: Request, res: Response)=>{
     const {email} = req.body;
     const user = await prisma.user.findUnique({where:{email}})
     //check if acc exist
-    if(!user) return res.status(404).json("User not found")
+    if(!user) return res.status(404).json({message:"User not found"})
     //generate random 6 digit otp
     const new_otp = Math.floor(100000 + Math.random() * 900000);
     // const new_otp = 123456;
