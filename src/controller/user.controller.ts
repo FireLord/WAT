@@ -16,14 +16,17 @@ export const register = async (req: Request, res: Response) => {
     name,
     email,
     password,
+    ph_number
   }: {
     name: string;
     email: string;
     password: string;
+    ph_number: string
   } = req.body;
 
   try {
     //check if the user already exist
+    // console.log(ph_number);
     const alreadyExist = await prisma.user.findUnique({ where: { email } });
     if (alreadyExist)
       return res.status(400).json({ message: "User already exist" });
@@ -33,6 +36,7 @@ export const register = async (req: Request, res: Response) => {
         name,
         email,
         password: hashedPassword,
+        ph_number
       },
     });
     const isMailSent = await sendVerificationMail(user.id, user.name, user.email);
@@ -109,33 +113,80 @@ export const refreshToken = async (req: Request, res: Response) => {
   }
 };
 
+// const sendVerificationMail = async (id: string, name: string, email: string) => {
+//   console.log("email", email);
+//   //generate token with email
+//   const token = await generateVerificationToken({ id, email });
+//   const verificationUrl = `${process.env.BASE_URL}/v2/verify?token=${token}`;
+//   (async function () {
+//     const { data, error } = await resend.emails.send({
+//       from: "WhatsTrek <support@whatstrek.com>",
+//       to: [email],
+//       subject: "Just One More Step – Verify Your Whatstrek Email!",
+//       html: `
+//       Hi ${name},<br/>
+//       You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the link below:<br/>
+//       <a href=${verificationUrl}>Verify My Email</a><br/>
+//       Once verified, you'll be all set to explore features like lead automation, contact management, and more.<br/>
+//       If you didn’t sign up, no need to worry – just ignore this email.<br/>
+//       Welcome aboard!<br/>
+//       Here's a Introduction video to get you started:<br/>
+//       <iframe
+//           src="https://www.youtube.com/embed/lJIB4Ct5y2U"
+//           allow="autoplay; encrypted-media"
+//           allowFullScreen
+//           title="video"
+//           className="h-[300px] md:h-[400px] w-[100%] md:w-[70%] rounded-md"
+//         />
+//       <br/>
+//       https://youtu.be/lJIB4Ct5y2U <br/> <br/>
+//       Regards,<br/>
+//       The Whatstrek Team`
+//     });
+
+//     if (error) {
+//       console.error({ error });
+//       return "Error while sending verification email, please try again later. If the issue persists, please report this bug.";
+//     }
+
+//     console.log({ data });
+//     return "Verification email sent";
+//   })();
+// };
 const sendVerificationMail = async (id: string, name: string, email: string) => {
   console.log("email", email);
-  //generate token with email
   const token = await generateVerificationToken({ id, email });
   const verificationUrl = `${process.env.BASE_URL}/v2/verify?token=${token}`;
+  
   (async function () {
     const { data, error } = await resend.emails.send({
       from: "WhatsTrek <support@whatstrek.com>",
       to: [email],
       subject: "Just One More Step – Verify Your Whatstrek Email!",
       html: `
-      Hi ${name},<br/>
-      You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the link below:<br/>
-      <a href=${verificationUrl}>Verify My Email</a><br/>
-      Once verified, you'll be all set to explore features like lead automation, contact management, and more.<br/>
-      If you didn’t sign up, no need to worry – just ignore this email.<br/>
-      Welcome aboard!<br/>
-      Here's a Introduction video to get you started:<br/>
-      <iframe
-          src="https://www.youtube.com/embed/lJIB4Ct5y2U"
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          title="video"
-          className="h-[300px] md:h-[400px] w-[100%] md:w-[70%] rounded-md"
-        />
-      <br/>
-      https://youtu.be/lJIB4Ct5y2U <br/> <br/>
+      Hi ${name},<br/><br/>
+      You’re almost there! To complete your Whatstrek setup and unlock your marketing toolkit, please confirm your email by clicking the button below:<br/><br/>
+      <a href="${verificationUrl}" style="
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        margin: 10px 0;
+        cursor: pointer;">
+        Verify My Email
+      </a><br/><br/>
+      Once verified, you'll be all set to explore features like lead automation, contact management, and more.<br/><br/>
+      If you didn’t sign up, no need to worry – just ignore this email.<br/><br/>
+      Welcome aboard!<br/><br/>
+      Here's an Introduction video to get you started:<br/>
+      <a href="https://youtu.be/lJIB4Ct5y2U">
+        <img src="https://img.youtube.com/vi/lJIB4Ct5y2U/0.jpg" alt="Watch the introduction video" style="width:100%; max-width:600px; border-radius:8px;"/>
+      </a><br/><br/>
+      If you can't see the video, click here: <a href="https://youtu.be/lJIB4Ct5y2U">https://youtu.be/lJIB4Ct5y2U</a> <br/><br/>
       Regards,<br/>
       The Whatstrek Team`
     });

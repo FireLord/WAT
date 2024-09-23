@@ -13,7 +13,7 @@ model User {
   email               String    @unique
   verified            Boolean   @default(false)
   password            String
-  ph_number           Int?
+  ph_number           String?
   subscription_expiry DateTime?
 
   account        Template[]
